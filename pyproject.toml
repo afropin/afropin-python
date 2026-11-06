@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "afropin"
+version = "1.0.0"
+description = "Python library for the AfroPin gift card API: sell, top up and redeem PINs, quotes, stores and webhooks"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = []
+authors = [{ name = "AfroPin Software Limited" }]
+keywords = ["afropin", "gift cards", "vouchers", "pins", "api"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+]
+
+[project.urls]
+Homepage = "https://afropin.com/developers"
+Documentation = "https://afropin.com/user/docs/introduction"
+Source = "https://github.com/afropin/afropin-python"
+
+[tool.setuptools]
+packages = ["afropin"]
