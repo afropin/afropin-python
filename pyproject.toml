@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "afropin"
-version = "2.0.0"
+version = "2.1.0"
 description = "Python library for the AfroPin gift card API: sell, top up and redeem PINs, quotes, stores and webhooks"
 readme = "README.md"
 license = { text = "MIT" }

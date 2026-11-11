@@ -113,7 +113,7 @@ class ResellerBrandStores:
         self._client = client
 
     def list(self, params=None, idempotency_key=None):
-        """Brand stores where your customers can spend the PINs you sell. (GET /api/v1/reseller/brand-stores)"""
+        """Brand stores where a PIN of one product can be spent: pass catalog_id. (GET /api/v1/reseller/brand-stores)"""
         return self._client.request("GET", "reseller/brand-stores", params, idempotency_key, list_=True)
 
 
@@ -205,6 +205,15 @@ class BrandIssuingCatalog:
     def get(self, catalog_id, params=None, idempotency_key=None):
         """One product you can sell. (GET /api/v1/brand/issuing-catalog/{catalog_id})"""
         return self._client.request("GET", "brand/issuing-catalog/%s" % (_quote(catalog_id),), params, idempotency_key)
+
+
+class BrandBrandStores:
+    def __init__(self, client):
+        self._client = client
+
+    def list(self, params=None, idempotency_key=None):
+        """Brand stores where a PIN of one of your products can be spent: pass catalog_id. (GET /api/v1/brand/brand-stores)"""
+        return self._client.request("GET", "brand/brand-stores", params, idempotency_key, list_=True)
 
 
 class BrandPins:
@@ -324,6 +333,7 @@ class Brand:
         self.stores = BrandStores(client)
         self.cards = BrandCards(client)
         self.issuing_catalog = BrandIssuingCatalog(client)
+        self.brand_stores = BrandBrandStores(client)
         self.pins = BrandPins(client)
         self.catalog = BrandCatalog(client)
         self.reseller_stores = BrandResellerStores(client)
