@@ -10,6 +10,7 @@ import json
 import os
 import secrets
 import sys
+import time
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -37,8 +38,18 @@ class Offline(unittest.TestCase):
 
     def test_verifies_webhooks(self):
         body = '{"type":"pin.sold","data":{"pin_id":"p1"}}'
-        self.assertTrue(webhooks.verify(body, hmac.new(b"whsec", body.encode(), hashlib.sha256).hexdigest(), "whsec"))
-        self.assertFalse(webhooks.verify(body, hmac.new(b"other", body.encode(), hashlib.sha256).hexdigest(), "whsec"))
+        now = int(time.time())
+
+        def signed(secret, at=now):
+            sig = hmac.new(secret.encode(), ("evt_1.%d.%s" % (at, body)).encode(), hashlib.sha256).hexdigest()
+            return {"Webhook-Id": "evt_1", "Webhook-Timestamp": str(at), "Webhook-Signature": sig}
+
+        self.assertTrue(webhooks.verify(body, signed("whsec"), "whsec"))
+        self.assertTrue(webhooks.verify(body.encode(), signed("whsec"), "whsec"))
+        self.assertEqual(webhooks.parse(body, signed("whsec"), "whsec")["id"], "evt_1")
+        self.assertFalse(webhooks.verify(body, signed("other"), "whsec"))
+        self.assertFalse(webhooks.verify(body, signed("whsec", now - 301), "whsec"))
+        self.assertFalse(webhooks.verify(body, {}, "whsec"))
 
 
 @unittest.skipUnless(os.environ.get("AFROPIN_TEST_ENV"), "set AFROPIN_TEST_ENV to run against an API")

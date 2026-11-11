@@ -99,6 +99,10 @@ class ResellerPins:
         """Change a PIN's webhook. (POST /api/v1/reseller/pins/webhook)"""
         return self._client.request("POST", "reseller/pins/webhook", params, idempotency_key)
 
+    def set_delivery(self, params=None, idempotency_key=None):
+        """Choose who delivers a PIN's codes to its customer: us (handle_delivery true) or you. (POST /api/v1/reseller/pins/delivery)"""
+        return self._client.request("POST", "reseller/pins/delivery", params, idempotency_key)
+
     def cashouts(self, pin_id, params=None, idempotency_key=None):
         """A PIN's cashouts. (GET /api/v1/reseller/pins/{pin_id}/cashouts)"""
         return self._client.request("GET", "reseller/pins/%s/cashouts" % (_quote(pin_id),), params, idempotency_key, list_=True)
@@ -242,6 +246,10 @@ class BrandPins:
     def set_webhook(self, params=None, idempotency_key=None):
         """Change a PIN's webhook. (POST /api/v1/brand/pins/webhook)"""
         return self._client.request("POST", "brand/pins/webhook", params, idempotency_key)
+
+    def set_delivery(self, params=None, idempotency_key=None):
+        """Choose who delivers a PIN's codes to its customer: us (handle_delivery true) or you. (POST /api/v1/brand/pins/delivery)"""
+        return self._client.request("POST", "brand/pins/delivery", params, idempotency_key)
 
     def check(self, params=None, idempotency_key=None):
         """Check a PIN before redeeming it; nothing changes. (POST /api/v1/brand/pins/check)"""

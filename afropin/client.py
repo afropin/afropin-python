@@ -12,7 +12,7 @@ import urllib.request
 from .errors import AfroPinError
 from .page import Page
 
-VERSION = "1.0.0"
+VERSION = "2.0.0"
 BASE_URL = "https://afropin.com/api/v1"
 
 

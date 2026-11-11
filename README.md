@@ -1,5 +1,7 @@
 # AfroPin for Python
 
+[![PyPI](https://img.shields.io/pypi/v/afropin)](https://pypi.org/project/afropin/)
+
 The AfroPin gift card API from Python: sell, top up and redeem PINs, quotes, stores and webhooks.
 
 ```
@@ -85,9 +87,14 @@ you. If a sale times out, send it again with the same `external_reference`: it e
 from afropin import webhooks
 
 # Flask
-event = webhooks.parse(request.get_data(), request.headers.get("webhook-secret"), WEBHOOK_SECRET)
+event = webhooks.parse(request.get_data(), request.headers, WEBHOOK_SECRET)
 if event["type"] == "pin.spent":
     ...
 ```
 
-`parse` raises `invalid_signature` when the signature doesn't match. Use the raw body exactly as received.
+Each webhook carries `webhook-id`, `webhook-timestamp` and `webhook-signature` headers. `parse` raises `invalid_signature` when the
+signature doesn't match the body, a header is missing, or the timestamp is more than 5 minutes from now (check your
+server clock). Use the raw body exactly as received. The event's `id` is the same on every retry, so use it to skip
+an event you've already handled.
+
+In Django, pass `request.body` and `request.headers`.
